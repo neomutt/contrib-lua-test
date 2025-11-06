@@ -31,25 +31,29 @@ end
 describe('lua API', function()
   describe('test get/set', function()
     it('works with DT_STRING', function()
-      test_config_type("visual", "vim", "fubar")
+      test_config_type("hostname", "apple.com", "banana.com")
     end)
 
     it('works with DT_NUMBER and positive ints', function()
-      test_config_type("connect_timeout", 69, 42)
-      test_config_type("connect_timeout", 42, 69)
+      test_config_type("wrap", 80, 42)
+      test_config_type("wrap", 42, 80)
     end)
 
     it('works with DT_NUMBER and negative ints', function()
-      test_config_type("connect_timeout", 69, -42)
-      test_config_type("connect_timeout", -42, 69)
+      test_config_type("wrap", 80, -42)
+      test_config_type("wrap", -42, 80)
     end)
 
     it('works with DT_NUMBER and does not accept positive int overflow', function()
-      assert.has_error(function() test_config_type("connect_timeout", 69, 33000) end)
+      assert.has_error(function() test_config_type("timeout", 99, 33000) end)
     end)
 
     it('works with DT_NUMBER and does not accept negative int overflow', function()
-      assert.has_error(function() test_config_type("connect_timeout", 69, -33000) end)
+      assert.has_error(function() test_config_type("timeout", 99, -33000) end)
+    end)
+
+    it('works with DT_LONG and big ints', function()
+      test_config_type("pgp_timeout", 300, 300000)
     end)
 
     it('works with DT_BOOL', function()
@@ -61,7 +65,7 @@ describe('lua API', function()
     end)
 
     it('works with DT_PATH', function()
-      test_config_type("alias_file", "contrib/lua/test_lua-api_runner.neomuttrc", "/dev/null")
+      test_config_type("alias_file", "test_lua-api_runner.neomuttrc", "")
     end)
 
     it('works with DT_SORT', function()
@@ -78,6 +82,10 @@ describe('lua API', function()
 
     it('works with DT_ADDRESS', function()
       test_config_type("from", "fubar@example.org", "barfu@example.com")
+    end)
+
+    it('works with DT_EXPANDO', function()
+      test_config_type("forward_format", "[%a: %s]", "forward %f")
     end)
 
     it('works with custom my_ variable DT_STRING', function()
