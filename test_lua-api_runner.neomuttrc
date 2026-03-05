@@ -9,4 +9,4 @@ set my_fubar     = "Ford Prefect"
 
 lua-source test_lua-api_spec.lua
 
-# vim: syn=neomuttrc
+# vim: ft=neomuttrc
